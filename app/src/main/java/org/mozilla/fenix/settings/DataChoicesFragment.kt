@@ -37,6 +37,9 @@ class DataChoicesFragment : PreferenceFragmentCompat() {
                 } else {
                     context.components.analytics.metrics.stop(MetricServiceType.Marketing)
                 }
+            } else if (key == getPreferenceKey(R.string.pref_key_experimentation)) {
+                val enabled = context.settings().isExperimentationEnabled
+                context.components.analytics.experiments.globalUserParticipation = enabled
             }
         }
     }
@@ -72,7 +75,7 @@ class DataChoicesFragment : PreferenceFragmentCompat() {
 
         requirePreference<SwitchPreference>(R.string.pref_key_experimentation).apply {
             isChecked = context.settings().isExperimentationEnabled
-            isVisible = Config.channel.isReleaseOrBeta
+            isVisible = Config.channel.isDebug
             onPreferenceChangeListener = SharedPreferenceUpdater()
         }
     }
